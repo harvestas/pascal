@@ -1,8 +1,9 @@
 import React from 'react';
-import { bool, object, string } from 'prop-types';
+import { bool, string } from 'prop-types';
 import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { FieldTextInput } from '../../components';
+import { FieldArray } from 'react-final-form-arrays';
+import { FieldTextInput, IconClose, InlineTextButton } from '../../components';
 import * as validators from '../../util/validators';
 
 import PayoutDetailsAddress from './PayoutDetailsAddress';
@@ -11,8 +12,21 @@ import PayoutDetailsPersonalDetails from './PayoutDetailsPersonalDetails';
 import { stripeCountryConfigs } from './PayoutDetailsForm';
 import css from './PayoutDetailsForm.css';
 
-const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps, country }) => {
-  const { disabled, form, intl, values } = fieldRenderProps;
+// In EU, there can be a maximum of 4 additional owners
+const MAX_NUMBER_OF_ADDITIONAL_OWNERS = 4;
+
+const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
+  const {
+    id,
+    disabled,
+    form,
+    intl,
+    values,
+    form: {
+      mutators: { push },
+    },
+  } = fieldRenderProps;
+  const { country } = values;
 
   const companyNameLabel = intl.formatMessage({ id: 'PayoutDetailsForm.companyNameLabel' });
   const companyNamePlaceholder = intl.formatMessage({
@@ -51,6 +65,15 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps, country }) => {
     stripeCountryConfigs(country).companyConfig &&
     stripeCountryConfigs(country).companyConfig.personalAddress;
 
+  const showAdditionalOwnersField =
+    country &&
+    stripeCountryConfigs(country).companyConfig &&
+    stripeCountryConfigs(country).companyConfig.additionalOwners;
+
+  const hasAdditionalOwners = values.company && values.company.additionalOwners;
+  const hasMaxNumberOfAdditionalOwners =
+    hasAdditionalOwners &&
+    values.company.additionalOwners.length >= MAX_NUMBER_OF_ADDITIONAL_OWNERS;
   return (
     <React.Fragment>
       {country ? (
@@ -99,6 +122,7 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps, country }) => {
             country={country}
             fieldId="company"
           />
+
           {showPersonalAddressField ? (
             <PayoutDetailsAddress
               country={country}
@@ -108,6 +132,52 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps, country }) => {
               fieldId="company.personalAddress"
             />
           ) : null}
+
+          {showAdditionalOwnersField ? (
+            <div className={css.sectionContainer}>
+              <FieldArray id={id} name={'company.additionalOwners'}>
+                {({ fields }) =>
+                  fields.map((name, index) => (
+                    <div className={css.additionalOwnerWrapper} key={name}>
+                      <div
+                        className={css.fieldArrayRemove}
+                        onClick={() => fields.remove(index)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <IconClose rootClassName={css.closeIcon} /> Remove person
+                      </div>
+                      <PayoutDetailsPersonalDetails
+                        intl={intl}
+                        disabled={disabled}
+                        values={values}
+                        country={country}
+                        fieldId={`company.additionalOwners.${index}`}
+                      />
+                      {showPersonalAddressField ? (
+                        <PayoutDetailsAddress
+                          country={country}
+                          intl={intl}
+                          disabled={disabled}
+                          form={form}
+                          fieldId={`company.additionalOwners.${index}`}
+                        />
+                      ) : null}
+                    </div>
+                  ))
+                }
+              </FieldArray>
+
+              {!hasAdditionalOwners || !hasMaxNumberOfAdditionalOwners ? (
+                <InlineTextButton
+                  type="button"
+                  className={css.fieldArrayAdd}
+                  onClick={() => push('company.additionalOwners', undefined)}
+                >
+                  <FormattedMessage id="PayoutDetailsForm.additionalOwnerLabel" />
+                </InlineTextButton>
+              ) : null}
+            </div>
+          ) : null}
         </React.Fragment>
       ) : null}
     </React.Fragment>
@@ -115,28 +185,13 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps, country }) => {
 };
 
 PayoutDetailsFormCompanyComponent.defaultProps = {
-  className: null,
-  country: null,
-  createStripeAccountError: null,
+  id: null,
   disabled: false,
-<<<<<<< HEAD
-  inProgress: false,
-  ready: false,
-  submitButtonText: null,
-=======
->>>>>>> 70cd0720... Merge to add personal address
 };
 
 PayoutDetailsFormCompanyComponent.propTypes = {
-  className: string,
-  createStripeAccountError: object,
+  id: string,
   disabled: bool,
-<<<<<<< HEAD
-  inProgress: bool,
-  ready: bool,
-  submitButtonText: string,
-=======
->>>>>>> 70cd0720... Merge to add personal address
 
   // from injectIntl
   intl: intlShape.isRequired,
