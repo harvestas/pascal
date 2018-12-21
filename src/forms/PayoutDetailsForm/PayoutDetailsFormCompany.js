@@ -144,7 +144,7 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
                         onClick={() => fields.remove(index)}
                         style={{ cursor: 'pointer' }}
                       >
-                        <IconClose rootClassName={css.closeIcon} /> Remove person
+                        <IconClose rootClassName={css.closeIcon} size="small" /> Remove person
                       </div>
                       <PayoutDetailsPersonalDetails
                         intl={intl}
