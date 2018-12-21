@@ -14,6 +14,10 @@ way to update this template, but currently, we follow a pattern:
 
 ## Upcoming version 2019-XX-XX
 
+- [add] Support for Stripe company accounts. Multiple new translation keys were added and they might
+  not be translated into French yet. `PayoutDetailsForm` was separated into smaller subcomponents.  
+  [#980](https://github.com/sharetribe/flex-template-web/pull/980)
+
 ## [v2.6.0] 2019-01-02
 
 - [fix] Wrong translations for perUnit in fr.json.
