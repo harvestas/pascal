@@ -3,7 +3,7 @@ import { bool, string } from 'prop-types';
 import { compose } from 'redux';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { FieldArray } from 'react-final-form-arrays';
-import { FieldTextInput, IconClose, InlineTextButton } from '../../components';
+import { FieldTextInput, IconAdd, IconClose, InlineTextButton } from '../../components';
 import * as validators from '../../util/validators';
 
 import PayoutDetailsAddress from './PayoutDetailsAddress';
@@ -96,6 +96,7 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
             <FieldTextInput
               id="company.companyTaxId"
               name="company.companyTaxId"
+              className={css.taxId}
               disabled={disabled}
               type="text"
               autoComplete="company-tax-id"
@@ -125,6 +126,7 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
 
           {showPersonalAddressField ? (
             <PayoutDetailsAddress
+              className={css.personalAddressContainer}
               country={country}
               intl={intl}
               disabled={disabled}
@@ -134,7 +136,7 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
           ) : null}
 
           {showAdditionalOwnersField ? (
-            <div className={css.sectionContainer}>
+            <div className={css.additionalOwnerWrapper}>
               <FieldArray id={id} name={'company.additionalOwners'}>
                 {({ fields }) =>
                   fields.map((name, index) => (
@@ -144,7 +146,10 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
                         onClick={() => fields.remove(index)}
                         style={{ cursor: 'pointer' }}
                       >
-                        <IconClose rootClassName={css.closeIcon} size="small" /> Remove person
+                        <span className={css.additionalOwnerLabel}>
+                          <IconClose rootClassName={css.closeIcon} size="small" />
+                          <FormattedMessage id="PayoutDetailsForm.additionalOwnerRemove" />
+                        </span>
                       </div>
                       <PayoutDetailsPersonalDetails
                         intl={intl}
@@ -155,6 +160,7 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
                       />
                       {showPersonalAddressField ? (
                         <PayoutDetailsAddress
+                          className={css.personalAddressContainer}
                           country={country}
                           intl={intl}
                           disabled={disabled}
@@ -173,7 +179,10 @@ const PayoutDetailsFormCompanyComponent = ({ fieldRenderProps }) => {
                   className={css.fieldArrayAdd}
                   onClick={() => push('company.additionalOwners', undefined)}
                 >
-                  <FormattedMessage id="PayoutDetailsForm.additionalOwnerLabel" />
+                  <span className={css.additionalOwnerLabel}>
+                    <IconAdd rootClassName={css.addIcon} />
+                    <FormattedMessage id="PayoutDetailsForm.additionalOwnerLabel" />
+                  </span>
                 </InlineTextButton>
               ) : null}
             </div>

@@ -27,3 +27,7 @@
 .error {
   color: var(--failColor);
 }
+
+.bankDetailsStripeField .error {
+  @apply --marketplaceModalErrorStyles;
+}

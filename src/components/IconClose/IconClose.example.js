@@ -9,7 +9,7 @@ export const Icon = {
 export const IconSmall = {
   component: IconClose,
   props: {
-    size: '8',
+    size: 'small',
   },
   group: 'icons',
 };

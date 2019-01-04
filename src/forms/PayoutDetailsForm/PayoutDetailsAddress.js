@@ -24,7 +24,7 @@ const CANADIAN_PROVINCES = [
 ];
 
 const PayoutDetailsAddress = props => {
-  const { country, intl, disabled, form, fieldId } = props;
+  const { className, country, intl, disabled, form, fieldId } = props;
   const countryConfig = country ? stripeCountryConfigs(country).addressConfig : null;
 
   const isRequired = (countryConfig, field) => {
@@ -101,7 +101,7 @@ const PayoutDetailsAddress = props => {
   );
 
   return (
-    <div className={css.sectionContainer}>
+    <div className={className ? className : css.sectionContainer}>
       {showTitle ? <h3 className={css.subTitle}>{addressTitle}</h3> : null}
 
       {showAddressLine ? (

@@ -282,7 +282,7 @@ class TokenInputFieldComponent extends Component {
         })}
 
         {showStripeError ? <p className={css.error}>{this.state.stripeError}</p> : null}
-        {showFormError ? <p className={css.error}>{formMeta.error}</p> : null}
+        {showFormError ? <span className={css.error}>{formMeta.error}</span> : null}
       </div>
     );
   }

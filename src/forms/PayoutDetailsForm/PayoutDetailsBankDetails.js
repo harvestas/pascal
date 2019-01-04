@@ -26,6 +26,7 @@ const PayoutDetailsBankDetails = props => {
         <FormattedMessage id="PayoutDetailsForm.bankDetails" />
       </h3>
       <StripeBankAccountTokenInputField
+        className={css.bankDetailsSripeField}
         disabled={disabled}
         name={`${fieldId}.bankAccountToken`}
         formName="PayoutDetailsForm"

@@ -82,7 +82,7 @@
   flex-grow: 1;
 
   @media (--viewportLarge) {
-    padding: 90px 15vw 82px 82px;
+    padding: 82px 15vw 82px 82px;
     border-left: 1px solid var(--matterColorNegative);
     background-color: var(--matterColorLight);
   }
@@ -98,4 +98,8 @@
   @media (--viewportMedium) {
     margin-bottom: 0;
   }
+}
+
+.modalTitle {
+  @apply --marketplaceModalTitleStyles;
 }
